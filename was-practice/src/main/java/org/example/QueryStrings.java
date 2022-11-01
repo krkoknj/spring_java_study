@@ -26,4 +26,12 @@ public class QueryStrings {
                 "queryStringList=" + queryStringList +
                 '}';
     }
+
+    public String getValue(String key) {
+        return this.queryStringList.stream()
+                .filter(queryString -> queryString.exists(key))
+                .map(QueryString::getValue)
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -2,6 +2,8 @@ package org.example;
 
 
 
+import org.example.calculator.Calculator;
+import org.example.calculator.interface_calculate.PositiveNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,19 +32,8 @@ public class CustomWebApplicationServer {
             while ((clientSocket = serverSocket.accept()) != null) {
                 logger.info("[CustomWebApplicationServer] client connected!");
 
-                /**
-                 * 사용자 요청을 메인 Thread가 처리하도록 한다.
-                 */
+                new Thread(new ClientRequestHandler(clientSocket)).start();
 
-                try(InputStream in = clientSocket.getInputStream(); OutputStream out = clientSocket.getOutputStream()) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-                    DataOutputStream dos = new DataOutputStream(out);
-
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        System.out.println(line);
-                    }
-                }
             }
         }
     }
